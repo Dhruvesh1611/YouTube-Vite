@@ -1,75 +1,62 @@
-import './Contents.css'
+import React, { useEffect, useState } from "react";
+import './Contents.css';
+
 function Contents() {
-    const videos = [
-        {
-            id: 1, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-8.png?raw=true', title: 'Bulbuli | Coke Studio Bangla | Season One | RItu Raj X Nandita',
-            description: 'Coke Studio Bangla', views: "1.5M views • 2 days ago", channel: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%204%20(1).png?raw=true'
+    const [data, setData] = useState([]);
+    const [selectedVideo, setSelectedVideo] = useState(null); // State to track selected video for larger view
 
-        }, {
-            id: 2, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-9.png?raw=true', title: 'Infinix Note 12:       AMOLED    Helio G88 SoC!',
-            description: 'ATC Android ToTo Company', views: "42M views • 2 days ago", channel: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%201%20(4).png?raw=true'
+    useEffect(() => {
+        fetch("https://youtube-api-jytp.onrender.com/data")
+            .then((response) => response.json())
+            .then((data) => setData(data))
+            .catch((error) => console.log("Error fetching data:", error));
+    }, []);
 
-        }, {
-            id: 3, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-10.png?raw=true', title: 'My first UX Design case study - This got me my first job.',
-            description: 'Saptarshi Prakash', views: "48K views 1 • 5years ago", channel: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%204%20(3).png?raw=true'
+    // Function to handle video click and open it in a larger view
+    const handleVideoClick = (videoId) => {
+        setSelectedVideo(videoId); // Set the selected video ID
+    };
 
-        }, {
-            id: 4, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-11.png?raw=true', title: "My Mix", views: "Lopamudra Mitra, Anupam Roy, and more"
-        }, {
-            id: 5, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-4.png?raw=true', title: "UX Design - What is it? (From AJ&Smart)", description:'AJ&Smart', views: "150KM views • 3 years ago", channel:"https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%204%20(4).png?raw=true"
-        },
-        {
-            id: 6, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-5.png?raw=true', title: 'Mix - Mombati | Mohon Sharif | Dhakaiya Dose | Mahib Ahsan ft Anika',
-        
+    // Function to close the video player
+    const closePlayer = () => {
+        setSelectedVideo(null); // Reset the selected video ID to close the player
+    };
 
-        }, {
-            id: 7, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-6.png?raw=true', title: '  Nadir on the goto| 48 VISA-FREE',
-            channel: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%204%20(5).png?raw=true',description: 'Nadir On the Go', views: "1.7M views • 1 years ago",
-
-        }, {
-            id: 8, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-7.png?raw=true', title: '14 Advanced Tips to Design FASTER in Figma',
-            description: 'Mizko', views: "53K views • 1 years ago", channel: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Ellipse%204%20(6).png?raw=true'
-
-        }, {
-            id: 9, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail.png?raw=true', 
-        },
-        {
-            id: 10, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-1.png?raw=true',
-            
-
-        }, {
-            id: 11, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-2.png?raw=true',
-            
-
-        }, {
-            id: 12, img_url: 'https://github.com/PatelNeelMahesh/frontend_tasks/blob/main/02.youtube-clone/assets/Thumbnail-3.png?raw=true',
-            
-
-        }
-
-
-    ]
     return (
-        <>
-            <div className="feed">
-                {videos.map((feed) => (
-                    <div key={feed.id} className="vid">
-
+        <div className="feed">
+            {selectedVideo ? (
+                <div className="video-player">
+                    <button className="close-button" onClick={closePlayer}>
+                        Close
+                    </button>
+                    <iframe
+                        width="100%"
+                        height="600px"
+                        src={`https://www.youtube.com/embed/${selectedVideo}`}
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
+                </div>
+            ) : (
+                data.map((feed) => (
+                    <div key={feed.id} className="video" onClick={() => handleVideoClick(feed.videoId)}>
                         <img src={feed.img_url} alt={feed.title} className="Video-thumb" />
-                        <div className='Channel'>
-                            <div><img src={feed.channel} />
+                        <div className="Channel">
+                            <div>
+                                <img src={feed.channel} alt="Channel logo" />
                             </div>
                             <div>
-
                                 <p className="title">{feed.title}</p>
                                 <p className="info">{feed.description}</p>
                                 <p className="info">{feed.views}</p>
-                            </div></div>
+                            </div>
+                        </div>
                     </div>
-                ))}
-            </div>
-        </>
+                ))
+            )}
+        </div>
     );
 }
 
-export default Contents
+export default Contents;
