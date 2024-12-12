@@ -11,10 +11,8 @@ function Homepage() {
     const [selectedVideo, setSelectedVideo] = useState(null); // State to store the selected video ID
     const [selectedCategory, setSelectedCategory] = useState(""); // State to store selected category
 
-    // Replace YOUR_API_KEY with your actual YouTube API key
     const API_KEY = "AIzaSyCNQ4i7icpDnnypNBPtsTGsrk0jyBF-y2Y"; 
 
-    // Function to handle search
     const handleSearch = async (category = "") => {
         const searchQuery = category || query.trim(); // Use category if provided, else use query
 
@@ -48,20 +46,23 @@ function Homepage() {
         }
     };
 
-    // Function to handle clicking on a video thumbnail
     const handleVideoClick = (videoId) => {
         setSelectedVideo(videoId); // Set the videoId of the selected video
     };
 
-    // Function to close the video player
     const handleCloseVideo = () => {
         setSelectedVideo(null); // Reset the selected video
     };
 
-    // Function to handle category button click
     const handleCategoryClick = (category) => {
         setSelectedCategory(category); // Set the selected category
         handleSearch(category); // Fetch videos for the selected category
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleSearch(); // Trigger search when Enter is pressed
+        }
     };
 
     return (
@@ -73,6 +74,7 @@ function Homepage() {
                         placeholder="Search YouTube"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)} // Update query state on input change
+                        onKeyDown={handleKeyDown} // Trigger search on Enter key
                     />
                     <div className="search_icon" onClick={() => handleSearch()}>
                         <img
@@ -100,7 +102,6 @@ function Homepage() {
                 ) : error ? (
                     <div className="error-message">{error}</div>
                 ) : selectedVideo ? (
-                    // If a video is selected, show the video player
                     <div className="video-player">
                         <iframe
                             width="100%"
