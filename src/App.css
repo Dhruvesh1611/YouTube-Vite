@@ -163,10 +163,8 @@ p1{
   border-radius: 30px;
 }
 text1:hover{
-
     color: black;
     background-color: #ffffff;
-  
 }
 .r1{
   display: flex;
@@ -297,6 +295,7 @@ text1:hover{
   font-weight: bold;
 }
 .text1.active:hover{
+  cursor: pointer;
   background-color: white;
   color: black;
 }

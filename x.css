@@ -222,3 +222,29 @@
       background-color: #ffffff;
   }
   
+
+
+  .result-item {
+    display: flex;
+    flex-direction: column; /* Stack image and title vertically */
+    align-items: center; /* Center the content */
+    text-align: center; /* Center the text */
+    max-width: 300px; /* You can adjust the width as needed */
+    margin: 0 auto; /* Center the items horizontally */
+  }
+  
+  .video-thumbnail {
+    width: 100%; /* Make the thumbnail responsive */
+    height: auto;
+    border-radius: 8px; /* Optional: Add rounded corners to the thumbnails */
+  }
+  
+  .result-item p {
+    margin-top: 10px; /* Adds space between the image and the title */
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  
+  
